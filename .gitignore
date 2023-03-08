@@ -1,0 +1,5 @@
+# 项目排除路径
+/xw-framework/target/
+/xw-web/target/
+
+.idea

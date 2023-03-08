@@ -19,3 +19,4 @@ mybatis-plus:
       logic-delete-value: 1 # 1为删除，0为未删除
       logic-not-delete-value: 0
       id-type: auto # id自增
+  type-aliases-package: com.xw.domain

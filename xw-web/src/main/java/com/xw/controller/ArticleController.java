@@ -1,5 +1,6 @@
 package com.xw.controller;
 
+import com.xw.domain.ResponseResult;
 import com.xw.domain.entity.Article;
 import com.xw.service.ArticleService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,13 @@ public class ArticleController {
     @Resource
     private ArticleService articleService;
 
-    @GetMapping("/list")
-    public List<Article> test() {
-        return articleService.list();
+    /**
+     * 查询热门文章
+     * @return
+     */
+    @GetMapping("/hotArticleList")
+    public ResponseResult hotArticleList() {
+        ResponseResult result = articleService.hotArticleList();
+        return result;
     }
 }
