@@ -6,20 +6,25 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xw.constants.SystemConstants;
 import com.xw.domain.ResponseResult;
 import com.xw.domain.entity.Article;
+import com.xw.domain.vo.ArticleDetailVo;
+import com.xw.domain.vo.ArticleListVo;
 import com.xw.domain.vo.HotArticleVo;
+import com.xw.domain.vo.PageVo;
 import com.xw.mapper.ArticleMapper;
 import com.xw.service.ArticleService;
-import org.springframework.beans.BeanUtils;
+import com.xw.service.CategoryService;
+import com.xw.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService{
     @Resource
     private ArticleMapper articleMapper;
+    @Resource
+    private CategoryService categoryService;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -32,12 +37,31 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // List<Article> articles = articleMapper.getHot10ArticleList();
 
         // 2.分装为vo
-        List<HotArticleVo> res = new ArrayList<>();
-        for (Article article : articles) {
-            HotArticleVo vo = new HotArticleVo();
-            BeanUtils.copyProperties(article, vo);
-            res.add(vo);
-        }
+        List<HotArticleVo> res = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
         return ResponseResult.okResult(res);
+    }
+
+    @Override
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        if (categoryId == 0)
+            categoryId = null;
+        if (pageNum == null || pageNum < 0)
+            pageNum = SystemConstants.DEFAULT_PAGE_NUM;
+        if (pageSize == null || pageSize < 0)
+            pageSize = SystemConstants.DEFAULT_PAGE_SIZE;
+        List<Article> articleList = articleMapper.getArticleAndCategoryName(pageNum - 1, pageSize, categoryId);
+        // 转换为Vo
+        List<ArticleListVo> articleListVoList = BeanCopyUtils.copyBeanList(articleList, ArticleListVo.class);
+        // 封装到PageVo中
+        PageVo pageVo = new PageVo(articleListVoList, (long) articleListVoList.size());
+        return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult getArticleDetail(Long id) {
+        if (id == null)
+            return ResponseResult.okResult();
+        ArticleDetailVo articleDetailVo = articleMapper.getArticleDetail(id);
+        return ResponseResult.okResult(articleDetailVo);
     }
 }
