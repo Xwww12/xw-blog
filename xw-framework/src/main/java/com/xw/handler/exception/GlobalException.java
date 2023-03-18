@@ -21,7 +21,8 @@ public class GlobalException {
      */
     @ExceptionHandler(SystemException.class)
     public ResponseResult systemExceptionHandler(SystemException e) {
-        log.error("出现了异常：{}", e.getMsg());
+        e.printStackTrace();
+//        log.error("出现了异常：{}", e.getMsg());
         return ResponseResult.errorResult(e.getCode(), e.getMsg());
     }
 
@@ -32,7 +33,8 @@ public class GlobalException {
      */
     @ExceptionHandler(Exception.class)
     public ResponseResult exceptionHandler(Exception e) {
-        log.error("出现了异常：{}", e.getMessage());
+        e.printStackTrace();
+//        log.error("出现了异常：{}", e.getMessage());
         return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }
 }

@@ -33,8 +33,11 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleList")
-    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
-        return articleService.articleList(pageNum, pageSize, categoryId);
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, String categoryId) {
+        if (categoryId.equals("NaN")) {
+            return articleService.articleList(pageNum, pageSize, 0L);
+        }
+        return articleService.articleList(pageNum, pageSize, Long.valueOf(categoryId));
     }
 
     /**

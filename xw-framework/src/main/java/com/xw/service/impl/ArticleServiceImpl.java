@@ -49,7 +49,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             pageNum = SystemConstants.DEFAULT_PAGE_NUM;
         if (pageSize == null || pageSize < 0)
             pageSize = SystemConstants.DEFAULT_PAGE_SIZE;
-        List<Article> articleList = articleMapper.getArticleAndCategoryName(pageNum - 1, pageSize, categoryId);
+        List<Article> articleList = articleMapper.getArticleAndCategoryName((pageNum - 1) * pageSize, pageSize, categoryId);
         // 转换为Vo
         List<ArticleListVo> articleListVoList = BeanCopyUtils.copyBeanList(articleList, ArticleListVo.class);
         // 封装到PageVo中
@@ -59,6 +59,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult getArticleDetail(Long id) {
+        System.out.println(id);
         if (id == null)
             return ResponseResult.okResult();
         ArticleDetailVo articleDetailVo = articleMapper.getArticleDetail(id);

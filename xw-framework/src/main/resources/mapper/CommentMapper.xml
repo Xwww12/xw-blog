@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xw.mapper.CommentMapper">
+    <sql id="commentVoSelect">
+        SELECT c.id, c.type, c.article_id, c.root_id, c.content, c.to_comment_user_id, c.to_comment_id, c.create_by, c.create_time,
+               u1.nick_name AS toCommentUserName, u2.nick_name AS username
+        FROM `xw_comment` c
+                LEFT JOIN sys_user u1
+                    ON c.to_comment_user_id = u1.id
+                LEFT JOIN sys_user u2
+                       ON c.create_by = u2.id
+    </sql>
+    <select id="commentList" resultType="commentVo">
+        <include refid="commentVoSelect"></include>
+        <where>
+            <if test="articleId != null">
+                c.article_id = #{articleId}
+            </if>
+                AND root_id = -1
+                AND c.`type` = #{type}
+                AND del_flag = 0
+        </where>
+        order by c.create_time desc
+        limit #{pageNum}, #{pageSize}
+    </select>
+
+    <select id="selectChildren" resultType="commentVo">
+        <include refid="commentVoSelect"></include>
+        <where>
+            <if test="rootId != null" >
+                root_id = #{rootId}
+            </if>
+            and root_id != -1
+            AND del_flag = 0
+        </where>
+        order by c.create_time desc
+    </select>
+
+</mapper>
