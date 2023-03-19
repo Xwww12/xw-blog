@@ -23,3 +23,8 @@ mybatis-plus:
       logic-not-delete-value: 0
       id-type: auto # id自增
   type-aliases-package: com.xw.domain
+
+oss:
+  accessKey: JLpNqAWoNH4aHewhg8x7sS77LiCqhNGnLTclVvjY
+  secretKey: SEDkhzR_jAMJu5v1y2UvZd2ZW8dYIfJG6Nvy1042
+  bucket: xwww-blog

@@ -31,7 +31,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize, Integer type) {
-        if (articleId <= 0)
+        if (articleId == null || articleId <= 0)
             articleId = null;
         if (pageNum == null || pageNum < 0)
             pageNum = SystemConstants.DEFAULT_PAGE_NUM;

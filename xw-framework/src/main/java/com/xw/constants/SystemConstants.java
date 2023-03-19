@@ -24,7 +24,7 @@ public class SystemConstants {
     /**
      * 默认所在页
      */
-    public static final int DEFAULT_PAGE_NUM = 0;
+    public static final int DEFAULT_PAGE_NUM = 1;
 
     /**
      * 默认页面大小

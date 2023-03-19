@@ -19,7 +19,7 @@
             </if>
                 AND root_id = -1
                 AND c.`type` = #{type}
-                AND del_flag = 0
+                AND c.del_flag = 0
         </where>
         order by c.create_time desc
         limit #{pageNum}, #{pageSize}
@@ -32,7 +32,7 @@
                 root_id = #{rootId}
             </if>
             and root_id != -1
-            AND del_flag = 0
+            AND c.del_flag = 0
         </where>
         order by c.create_time desc
     </select>
