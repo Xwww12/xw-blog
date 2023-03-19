@@ -11,4 +11,9 @@ public class RedisConstants {
      * 超时时间，单位秒
      */
     public static final Integer CACHE_TTL = 24 * 60 * 60;
+
+    /**
+     * 浏览量前缀
+     */
+    public static final String VIEW_COUNT = "article:viewCount";
 }

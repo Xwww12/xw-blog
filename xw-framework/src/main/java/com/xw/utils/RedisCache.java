@@ -215,4 +215,11 @@ public class RedisCache {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 更新缓存的浏览量
+     */
+    public void incrementCacheMapValue(String key, String hKey, int addValue) {
+        redisTemplate.opsForHash().increment(key, hKey, addValue);
+    }
 }

@@ -3,6 +3,7 @@ package com.xw.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xw.constants.RedisConstants;
 import com.xw.constants.SystemConstants;
 import com.xw.domain.ResponseResult;
 import com.xw.domain.entity.Article;
@@ -14,6 +15,7 @@ import com.xw.mapper.ArticleMapper;
 import com.xw.service.ArticleService;
 import com.xw.service.CategoryService;
 import com.xw.utils.BeanCopyUtils;
+import com.xw.utils.RedisCache;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +27,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private ArticleMapper articleMapper;
     @Resource
     private CategoryService categoryService;
+    @Resource
+    private RedisCache redisCache;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -59,10 +63,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult getArticleDetail(Long id) {
-        System.out.println(id);
         if (id == null)
             return ResponseResult.okResult();
         ArticleDetailVo articleDetailVo = articleMapper.getArticleDetail(id);
+        // 读取缓存的浏览量
+        Integer viewCount = redisCache.getCacheMapValue(RedisConstants.VIEW_COUNT, id.toString());
+        articleDetailVo.setViewCount(viewCount.longValue());
+
         return ResponseResult.okResult(articleDetailVo);
+    }
+
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        redisCache.incrementCacheMapValue(RedisConstants.VIEW_COUNT, id.toString(), 1);
+        return ResponseResult.okResult();
     }
 }
