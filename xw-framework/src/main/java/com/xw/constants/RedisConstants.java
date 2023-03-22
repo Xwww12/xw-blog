@@ -16,4 +16,9 @@ public class RedisConstants {
      * 浏览量前缀
      */
     public static final String VIEW_COUNT = "article:viewCount";
+
+    /**
+     * 后台登录前缀
+     */
+    public static final String CACHE_ADMIN_LOGIN_PREFIX = "admin:login:";
 }

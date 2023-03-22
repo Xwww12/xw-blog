@@ -15,7 +15,9 @@ public enum AppHttpCodeEnum {
     CONTENT_NOT_NULL(506, "评论内容不能为空"),
     FILE_TYPE_ERROR(507, "文件格式不支持"),
     FILE_EMPTY(508, "文件不能为空"),
-    USER_INFO_NOT_NULL(509, "用户信息不能为空");
+    USER_INFO_NOT_NULL(509, "用户信息不能为空"),
+    NAME_EXIST(510, "标签名为空或已存在"),
+    TAG_NOT_EXIST(511, "标签不存在");
 
     int code;
     String msg;

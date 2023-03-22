@@ -1,0 +1,30 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/xw_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印sql
+  global-config:
+    db-config:
+      logic-delete-field: delFlag # 逻辑删除字段
+      logic-delete-value: 1 # 1为删除，0为未删除
+      logic-not-delete-value: 0
+      id-type: auto # id自增
+  type-aliases-package: com.xw.domain
+
+oss:
+  accessKey: JLpNqAWoNH4aHewhg8x7sS77LiCqhNGnLTclVvjY
+  secretKey: SEDkhzR_jAMJu5v1y2UvZd2ZW8dYIfJG6Nvy1042
+  bucket: xwww-blog

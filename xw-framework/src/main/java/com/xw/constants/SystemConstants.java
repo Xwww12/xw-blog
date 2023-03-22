@@ -35,4 +35,15 @@ public class SystemConstants {
      * 审核通过的友链
      */
     public static final String LINK_STATUS_NORMAL = "0";
+
+    /**
+     * 菜单权限
+     */
+    public static final String MENU = "C";
+
+    /**
+     * 按钮权限
+     */
+    public static final String BUTTON = "F";
+    public static final String NORMAL = "0";
 }
