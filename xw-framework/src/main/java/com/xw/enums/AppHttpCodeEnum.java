@@ -17,7 +17,9 @@ public enum AppHttpCodeEnum {
     FILE_EMPTY(508, "文件不能为空"),
     USER_INFO_NOT_NULL(509, "用户信息不能为空"),
     NAME_EXIST(510, "标签名为空或已存在"),
-    TAG_NOT_EXIST(511, "标签不存在");
+    TAG_NOT_EXIST(511, "标签不存在"),
+    ARTICLE_NOT_EXIST(512, "文章不存在"),
+    COMPONENT_IS_EXIST(512, "路由地址已存在");
 
     int code;
     String msg;

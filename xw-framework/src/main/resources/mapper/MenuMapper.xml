@@ -42,5 +42,19 @@
         ORDER BY
             m.parent_id,m.order_num
     </select>
+    <select id="selectMenuByRoleId" resultType="com.xw.domain.entity.Menu">
+        SELECT
+            m.`id`, m.`menu_name`, m.`parent_id`
+        FROM
+          `sys_role_menu` rm
+            LEFT JOIN `sys_menu` m ON rm.`menu_id` = m.`id`
+        WHERE
+            rm.`role_id` = #{id} AND
+            m.`menu_type` IN ('C','M') AND
+            m.`status` = 0 AND
+            m.`del_flag` = 0
+        ORDER BY
+            m.parent_id,m.order_num
+    </select>
 
 </mapper>

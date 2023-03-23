@@ -2,6 +2,7 @@ package com.xw.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xw.domain.entity.Menu;
+import com.xw.domain.vo.SelectMenuVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,5 +21,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> selectAllRouterMenu();
 
     List<Menu> selectRouterMenuTreeByUserId(Long userId);
+
+    List<Menu> selectMenuByRoleId(Long id);
 }
 

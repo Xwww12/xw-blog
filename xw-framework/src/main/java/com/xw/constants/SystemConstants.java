@@ -45,5 +45,8 @@ public class SystemConstants {
      * 按钮权限
      */
     public static final String BUTTON = "F";
+
     public static final String NORMAL = "0";
+
+    public static final String ADMIN = "1";
 }
