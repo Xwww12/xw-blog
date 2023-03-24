@@ -2,6 +2,7 @@ package com.xw.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xw.domain.ResponseResult;
+import com.xw.domain.dto.AddCategoryDto;
 import com.xw.domain.entity.Category;
 
 /**
@@ -17,5 +18,15 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult getCategoryList();
+
+    ResponseResult pageList(Integer pageNum, Integer pageSize, String name, String status);
+
+    ResponseResult addCategory(AddCategoryDto categoryDto);
+
+    ResponseResult getCategory(Long id);
+
+    ResponseResult updateCategory(Category categoryDto);
+
+    ResponseResult deleteCategory(Long id);
 }
 

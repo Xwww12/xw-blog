@@ -116,9 +116,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     @Transactional
     public ResponseResult deleteRole(Long id) {
+        RoleMapper roleMapper = getBaseMapper();
+        if (roleMapper.getUserRoleCount(id) > 0) {
+            throw new SystemException(50, "有用户关联，无法删除");
+        }
         removeById(id);
-        roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, id));
+        roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>()
+                .eq(RoleMenu::getRoleId, id));
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult listAllRole() {
+        LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Role::getStatus, SystemConstants.NORMAL);
+        List<Role> list = list(wrapper);
+        return ResponseResult.okResult(list);
     }
 }
 

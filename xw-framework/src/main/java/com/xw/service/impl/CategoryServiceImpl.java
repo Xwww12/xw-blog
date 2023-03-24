@@ -1,19 +1,25 @@
 package com.xw.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.xw.constants.SystemConstants;
 import com.xw.domain.ResponseResult;
+import com.xw.domain.dto.AddCategoryDto;
 import com.xw.domain.entity.Article;
 import com.xw.domain.entity.Category;
+import com.xw.domain.entity.User;
 import com.xw.domain.vo.CategoryVo;
+import com.xw.domain.vo.PageVo;
+import com.xw.exception.SystemException;
 import com.xw.mapper.CategoryMapper;
 import com.xw.service.ArticleService;
 import com.xw.service.CategoryService;
 import com.xw.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -57,6 +63,67 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<CategoryVo> categoryVoList = BeanCopyUtils.copyBeanList(categoryList, CategoryVo.class);
 
         return ResponseResult.okResult(categoryVoList);
+    }
+
+    @Override
+    public ResponseResult pageList(Integer pageNum, Integer pageSize, String name, String status) {
+        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.hasText(name)) {
+            wrapper.like(Category::getName, name);
+        }
+        if (StringUtils.hasText(status)) {
+            wrapper.eq(Category::getStatus, status);
+        }
+        if (pageNum == null || pageNum < 0) {
+            pageNum = SystemConstants.DEFAULT_PAGE_NUM;
+        }
+        if (pageSize == null || pageSize < 0) {
+            pageSize = SystemConstants.DEFAULT_PAGE_SIZE;
+        }
+        Page<Category> page = new Page<>(pageNum, pageSize);
+        page(page, wrapper);
+        PageVo pageVo = new PageVo(page.getRecords(), page.getTotal());
+        return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult addCategory(AddCategoryDto categoryDto) {
+        if (count(new LambdaQueryWrapper<Category>()
+                .eq(Category::getName, categoryDto.getName())) > 0) {
+            throw new SystemException(500, "分类名已存在");
+        }
+        Category category = BeanCopyUtils.copyBean(categoryDto, Category.class);
+        save(category);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getCategory(Long id) {
+        if (id == null || id < 0) {
+            throw new SystemException(500, "id异常");
+        }
+        Category category = getById(id);
+        return ResponseResult.okResult(category);
+    }
+
+    @Override
+    public ResponseResult updateCategory(Category category) {
+        if (count(new LambdaQueryWrapper<Category>()
+                .eq(Category::getId, category.getId())) == 0) {
+            throw new SystemException(500, "分类不存在");
+        }
+        updateById(category);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteCategory(Long id) {
+        if (articleService.count(new LambdaQueryWrapper<Article>()
+                .eq(Article::getCategoryId, id)) > 0) {
+            throw new SystemException(500, "分类下有文章关联，无法删除");
+        }
+        removeById(id);
+        return ResponseResult.okResult();
     }
 }
 
